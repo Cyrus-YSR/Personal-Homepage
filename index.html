@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CYRUS YSR — REAL-TIME INTERACTIVE EDITION</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/",
+        "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.15.1/index.js",
+        "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.3.28/dist/lenis.mjs"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- FIXED FULL-VIEWPORT REAL-TIME WEBGL / THREE.JS + POST-PROCESSING STAGE -->
+  <canvas id="webgl-stage"></canvas>
+
+  <!-- AMBIENT AUDIO-REACTIVE LIGHTING VEIL -->
+  <div class="ambient-light-veil" id="ambient-light-veil"></div>
+
+  <!-- MINIMAL FLOATING TELEMETRY CHROME -->
+  <header class="art-hud-top">
+    <div class="hud-left">
+      <button class="hud-brand" data-jump="0">CYRUS YSR <span class="lava-dot">*</span></button>
+      <span class="hud-tag">GO + TS // REAL-TIME EDITION</span>
+    </div>
+    <div class="hud-center">
+      <span class="hud-chapter-code" id="hud-chapter-code">CH.01 // VOID &amp; DAVID</span>
+    </div>
+    <div class="hud-right">
+      <button class="hud-pill" id="btn-auto-film">AUTO CINEMA</button>
+      <a href="https://github.com/Cyrus-YSR" target="_blank" rel="noopener" class="hud-pill accent">GITHUB ↗</a>
+    </div>
+  </header>
+
+  <!-- RIGHT-SIDE SOUND WAVE NAVIGATOR (REPLACING STANDARD DOTS) -->
+  <nav class="soundwave-nav" id="soundwave-nav" aria-label="Chapter Sound Wave Navigator">
+    <div class="sw-labels" id="sw-labels">
+      <button class="sw-label" data-chapter="0" data-progress="0.04"><span>01</span> VOID · DAVID</button>
+      <button class="sw-label" data-chapter="1" data-progress="0.18"><span>02</span> MAGMA STAR</button>
+      <button class="sw-label" data-chapter="2" data-progress="0.31"><span>03</span> LAVA INK</button>
+      <button class="sw-label" data-chapter="3" data-progress="0.49"><span>04</span> SYSTEMS</button>
+      <button class="sw-label" data-chapter="4" data-progress="0.72"><span>05</span> LAB · STACK</button>
+      <button class="sw-label" data-chapter="5" data-progress="0.84"><span>06</span> VINYL</button>
+      <button class="sw-label" data-chapter="6" data-progress="0.985"><span>07</span> CYRUS YSR</button>
+    </div>
+    <div class="sw-bars" id="sw-bars"></div>
+    <div class="sw-readout" id="sw-readout">00.0%</div>
+  </nav>
+
+  <!-- FIXED FULL-SCREEN CHAPTER OVERLAYS (DRIVEN CONTINUOUSLY BY SCROLL TIMELINE) -->
+  <div class="stage-overlays">
+
+    <!-- CHAPTER 01: HERO ART INSTALLATION (TITLES REVEAL ONLY AFTER DAVID ASSEMBLES) -->
+    <section class="scene-layer" id="layer-hero">
+      <div class="hero-status" id="hero-status">
+        <span class="pulse-led"></span>
+        <span class="kinetic-text" id="hero-phase-label" data-text="PARTICLE FIELD INITIALIZING // ASSEMBLING SCULPTURE">PARTICLE FIELD INITIALIZING // ASSEMBLING SCULPTURE</span>
+      </div>
+      <div class="hero-content" id="hero-content">
+        <p class="hero-eyebrow kinetic-text" id="hero-eyebrow" data-text="GOPHER · FULL-STACK ENGINEER · ACM-ICPC ASIA REGIONAL BRONZE">GOPHER · FULL-STACK ENGINEER · ACM-ICPC ASIA REGIONAL BRONZE</p>
+        <h1 class="hero-display">
+          <span class="kinetic-line" id="hero-line-cyrus" data-text="CYRUS">CYRUS</span>
+          <span class="hero-ysr-row"><span class="kinetic-line accent-line" id="hero-line-ysr" data-text="YSR">YSR</span><span class="star-slot" id="hero-star-slot" aria-hidden="true">*</span></span>
+        </h1>
+        <div class="hero-footer-strip" id="hero-footer-strip">
+          <p class="hero-manifesto kinetic-text" data-text="SCULPTING HIGH-CONCURRENCY GOLANG SYSTEMS & REAL-TIME TYPESCRIPT EXPERIENCES.">SCULPTING HIGH-CONCURRENCY GOLANG SYSTEMS &amp; REAL-TIME TYPESCRIPT EXPERIENCES.</p>
+          <div class="scroll-cue">
+            <span>SCROLL TO EXPAND *</span>
+            <div class="scroll-line"><i></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 02: LAVA STAR SINGULARITY LABEL -->
+    <section class="scene-layer centered" id="layer-lava">
+      <div class="lava-caption" id="lava-caption">
+        <span class="caption-micro">PHASE 02 // FLUID MORPH</span>
+        <h2 class="lava-big-word kinetic-text" data-text="LIQUID ARCHITECTURE">LIQUID ARCHITECTURE</h2>
+      </div>
+    </section>
+
+    <!-- SINGLE SEAMLESS ZOOM STAR (NEVER SWAPS — LITERALLY THE "*" AFTER YSR SCALING TO COVER SCREEN) -->
+    <div class="zoom-star-layer" id="zoom-star-layer" aria-hidden="true">
+      <svg id="zoom-star-svg" viewBox="-100 -100 200 200" width="120" height="120">
+        <g fill="currentColor">
+          <rect x="-86" y="-23" width="172" height="46" rx="3" />
+          <rect x="-86" y="-23" width="172" height="46" rx="3" transform="rotate(60)" />
+          <rect x="-86" y="-23" width="172" height="46" rx="3" transform="rotate(120)" />
+          <circle cx="0" cy="0" r="36" />
+        </g>
+      </svg>
+    </div>
+
+    <!-- CHAPTER 03: LUSION-INSPIRED THERMAL FLOW & LAVA ORANGE BRUSH -->
+    <section class="scene-layer" id="layer-thermal">
+      <div class="thermal-frame">
+        <div class="thermal-top-row">
+          <span class="micro-badge">CH.03 // FLOW FIELD · THERMAL INK</span>
+          <span class="micro-badge accent-text">PAINT WITH CURSOR — 100% MOLTEN LAVA</span>
+        </div>
+        <div class="thermal-center-copy">
+          <h2 class="thermal-headline">
+            <span class="kinetic-line" data-text="CODE THAT FLOWS">CODE THAT FLOWS</span>
+            <span class="kinetic-line" data-text="LIKE MOLTEN LIGHT">LIKE MOLTEN LIGHT</span>
+          </h2>
+          <p class="thermal-sub kinetic-text" data-text="DISTRIBUTED CONCURRENCY IN GOLANG. KINETIC INTERFACES IN TYPESCRIPT & WEBGL. MOVE YOUR CURSOR TO IGNITE THERMAL TRAILS.">
+            DISTRIBUTED CONCURRENCY IN GOLANG. KINETIC INTERFACES IN TYPESCRIPT &amp; WEBGL. MOVE YOUR CURSOR TO IGNITE THERMAL TRAILS.
+          </p>
+        </div>
+        <div class="thermal-bot-row">
+          <span>SHADER: PING-PONG ADVECTION FBO</span>
+          <span>DISTORTION: LIQUID MAGNIFIER ZOOM</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 04: SELECTED SYSTEMS (LIQUID RUBBER MEMBRANE OVERLAYS) -->
+    <section class="scene-layer" id="layer-projects">
+      <div class="proj-shell">
+        <div class="proj-header">
+          <span class="micro-badge">CH.04 // SELECTED SYSTEMS · LIQUID MEMBRANE</span>
+          <div class="proj-counter">
+            <span id="proj-idx-num">01</span>
+            <span class="divider">/</span>
+            <span>04</span>
+          </div>
+        </div>
+
+        <div class="proj-body">
+          <div class="proj-kicker" id="proj-kicker">DISTRIBUTED MICROSERVICES</div>
+          <h2 class="proj-title" id="proj-title">MICRO-COMMERCE</h2>
+          <p class="proj-desc" id="proj-desc">
+            High-concurrency microservice e-commerce architecture powered by Golang, RocketMQ distributed transactions with inventory rollback, Redis distributed locks, captcha blacklist defense, and MySQL sharding.
+          </p>
+          <div class="proj-metrics" id="proj-metrics">
+            <div class="metric-cell"><span>CORE</span><strong>GOLANG</strong></div>
+            <div class="metric-cell"><span>ENGINE</span><strong>ROCKETMQ TX</strong></div>
+            <div class="metric-cell"><span>DATA</span><strong>MYSQL + REDIS</strong></div>
+            <div class="metric-cell"><span>INFRA</span><strong>DOCKER / K8S</strong></div>
+          </div>
+        </div>
+
+        <div class="proj-footer">
+          <div class="proj-pills" id="proj-pills">
+            <button class="p-pill active" data-proj="0">01 MICRO-COMMERCE</button>
+            <button class="p-pill" data-proj="1">02 REALTIME IM</button>
+            <button class="p-pill" data-proj="2">03 CLOUD DISK</button>
+            <button class="p-pill" data-proj="3">04 PVZ ENGINE</button>
+          </div>
+          <span class="proj-hint">SCROLL TO SURGE NEXT LIQUID MEMBRANE · HOVER TO WARP</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 05: FROM THE LAB (ANIME GIRL PARTICLES -> DISSOLVE RIGHT -> TECH STACK PANEL) -->
+    <section class="scene-layer" id="layer-lab">
+      <!-- Lab Title while Anime Girl is assembled -->
+      <div class="lab-anime-hud" id="lab-anime-hud">
+        <span class="micro-badge">CH.05 // FROM THE LAB · PARTICLE ENTITY</span>
+        <h2 class="lab-title">
+          <span class="kinetic-line" data-text="ETHEREAL">ETHEREAL</span>
+          <span class="kinetic-line accent-line" data-text="SYNTHESIS">SYNTHESIS</span>
+        </h2>
+        <p class="lab-caption">28,000 LIVE PARTICLES BREATHING IN 3D SPACE. KEEP SCROLLING TO DISSOLVE INTO THE STACK.</p>
+      </div>
+
+      <!-- Glassmorphic Tech Stack Panel sliding in from the right as particles fly right -->
+      <div class="stack-drawer" id="stack-drawer">
+        <div class="stack-drawer-head">
+          <div>
+            <span class="micro-badge accent-text">SYSTEM ARSENAL // TELEMETRY</span>
+            <h2 class="stack-drawer-title" id="stack-typewriter" data-full="TECH STACK & CREDENTIALS"></h2>
+          </div>
+          <div class="icpc-medal">
+            <span class="medal-tag">HONOR</span>
+            <strong>ACM-ICPC ASIA REGIONAL BRONZE</strong>
+          </div>
+        </div>
+
+        <div class="mech-grid" id="mech-grid">
+          <!-- Mechanical counter cards populated & animated by JS -->
+        </div>
+
+        <div class="stack-drawer-foot">
+          <span>2 YEARS COMPETITIVE ALGORITHMS · C++ &amp; DATA STRUCTURES</span>
+          <span>PARTICLE STREAM: ACTIVE</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 06: ANALOG VINYL SANCTUARY (REPLACING NOTES) -->
+    <section class="scene-layer" id="layer-vinyl">
+      <div class="vinyl-stage" id="vinyl-stage">
+        <div class="vinyl-topbar">
+          <span class="micro-badge">CH.06 // ANALOG VINYL SANCTUARY · AUDIO-REACTIVE SPACE</span>
+          <span class="micro-badge" id="vinyl-freq-status">SPECTRUM ENGINE // STANDBY — CLICK RECORD OR ALBUM TO PLAY</span>
+        </div>
+
+        <div class="vinyl-grid">
+          <!-- LEFT: REALISTIC PHYSICAL TURNTABLE -->
+          <div class="turntable-zone">
+            <div class="turntable-spotlight" id="turntable-spotlight"></div>
+            <div class="turntable-chassis" id="turntable-chassis">
+              <div class="chassis-screw tl"></div>
+              <div class="chassis-screw tr"></div>
+              <div class="chassis-screw bl"></div>
+              <div class="chassis-screw br"></div>
+
+              <!-- Platter & Grooved Black Vinyl Disc -->
+              <div class="platter-well">
+                <div class="platter-rim"></div>
+                <div class="vinyl-disc" id="vinyl-disc">
+                  <div class="vinyl-grooves"></div>
+                  <div class="vinyl-sheen"></div>
+                  <div class="vinyl-label" id="vinyl-label">
+                    <span class="vl-index" id="vl-index">01</span>
+                    <strong class="vl-title" id="vl-title">CROATIAN RHAPSODY</strong>
+                    <span class="vl-rpm">33⅓ RPM · PIANO</span>
+                    <div class="spindle"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Brushed Titanium S-Shaped Tonearm + Vibrating Stylus -->
+              <div class="tonearm-base">
+                <div class="tonearm-gimbal"></div>
+                <div class="tonearm-arm" id="tonearm-arm">
+                  <div class="tonearm-counterweight"></div>
+                  <div class="tonearm-tube"></div>
+                  <div class="tonearm-headshell" id="tonearm-headshell">
+                    <div class="stylus-led"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Physical Transport Controls & Mini Spectrum -->
+              <div class="deck-controls">
+                <button class="deck-play-btn" id="btn-vinyl-play">
+                  <span class="play-icon" id="play-icon">▶</span>
+                  <span id="play-label">SPIN RECORD</span>
+                </button>
+                <div class="deck-info">
+                  <span class="deck-now" id="deck-now">CROATIAN RHAPSODY</span>
+                  <span class="deck-bpm" id="deck-bpm">116 BPM · G MINOR VIRTUOSO</span>
+                </div>
+                <div class="deck-vu" id="deck-vu">
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: FAN-OUT STACKED ALBUMS (HOVER TO UNFOLD LIKE A FAN, CLICK TO SWITCH) -->
+          <div class="albums-zone">
+            <div class="albums-intro">
+              <span class="micro-badge accent-text">HOVER STACK TO UNFOLD · CLICK TO SPIN &amp; RE-TINT WORLD</span>
+              <h2 class="albums-heading">SONIC<br/>ARCHIVE<span class="lava-dot">*</span></h2>
+            </div>
+
+            <div class="album-fan-wrapper" id="album-fan-wrapper">
+              <!-- 5 Stacked / Fan-Out Albums rendered by JS -->
+            </div>
+
+            <div class="vinyl-signoff">
+              <p class="signoff-quote">KEEP SCROLLING FOR THE <span>PARTICLE SIGNATURE FINALE ↓</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 07: FINALE PARTICLE WORDMARK (UMO-INSPIRED GIANT "CYRUS YSR" PARTICLES) -->
+    <section class="scene-layer" id="layer-finale">
+      <div class="finale-stage">
+        <div class="finale-top-grid">
+          <div class="finale-quote-col">
+            <span class="micro-badge accent-text">CH.07 // PARTICLE SIGNATURE · HOVER TO TASTE</span>
+            <div class="reveal-quote-box" id="reveal-quote-box">
+              <!-- Top Revealed Layer (clipped left-to-right following cursor X) -->
+              <div class="reveal-top-layer" id="reveal-top-layer">
+                <p class="reveal-text-hot">but sometimes, you just need to taste it.</p>
+              </div>
+              <!-- Moving Tilted Divider Beam -->
+              <div class="reveal-divider" id="reveal-divider"></div>
+              <!-- Base Default Layer + Twinkling Micro Stars -->
+              <div class="reveal-base-layer">
+                <p class="reveal-text-base">Life is always full of bitterness</p>
+                <div class="reveal-stars" id="reveal-stars" aria-hidden="true"></div>
+              </div>
+            </div>
+            <div class="finale-badges">
+              <span>GOPHER</span>
+              <span>TYPESCRIPT</span>
+              <span>ACM-ICPC BRONZE</span>
+              <span>GAME LOVER</span>
+              <span>MOVIE CRITIC</span>
+            </div>
+          </div>
+
+          <div class="finale-nav-col">
+            <h4>NAVIGATE</h4>
+            <button data-jump="0.04">01 / VOID &amp; DAVID</button>
+            <button data-jump="0.31">03 / LAVA INK</button>
+            <button data-jump="0.49">04 / SELECTED SYSTEMS</button>
+            <button data-jump="0.72">05 / LAB &amp; TECH STACK</button>
+            <button data-jump="0.84">06 / ANALOG VINYL</button>
+          </div>
+
+          <div class="finale-nav-col">
+            <h4>CONNECT</h4>
+            <a href="https://github.com/Cyrus-YSR" target="_blank" rel="noopener">GITHUB @CYRUS-YSR ↗</a>
+            <a href="https://www.facebook.com/profile.php?id=61571781369012" target="_blank" rel="noopener">FACEBOOK ↗</a>
+            <a href="https://blog-iota-brown-74.vercel.app/" target="_blank" rel="noopener">LEGACY ARCHIVE ↗</a>
+          </div>
+        </div>
+
+        <div class="finale-bottom-bar">
+          <span>SWIPE CURSOR ACROSS THE 28,000-PARTICLE WORDMARK</span>
+          <span>© 2026 CYRUS YSR // JUST DO IT · LUCK IS WITH YOU</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- VIRTUAL SCROLL TRACK (LENIS SMOOTH TIMELINE: 1000VH CONTINUOUS WORLD) -->
+  <div class="virtual-scroll-track" id="virtual-scroll-track"></div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
